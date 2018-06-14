@@ -1,6 +1,6 @@
-#include <TimeLib.h>
-#include <LiquidCrystal.h>
-#include <pitches.h>
+#include <TimeLib.h> // imports the time library for the milliseconds function
+#include <LiquidCrystal.h> // imports a library to control the LCD
+#include <pitches.h> // imports a library that has the notes for the buzzer
 
 #define buzzerID 0 // Signal port for buzzer
 #define scaler 1.0 // Scaler for note playing
