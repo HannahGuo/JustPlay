@@ -19,7 +19,7 @@ const LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 int score = 0; // Keeps count of score
 
-// Various Songs
+// Various Songs, stored as integer arrays.
 int marySong[] = {3, 2, 1, 2, 3, 3, 3, 2, 2, 2, 3, 5, 5, 3, 2, 1, 2, 3, 3, 3, 3, 2, 2, 3, 2, 1};
 int hotCrossSong[] = {3, 2, 1, 3, 2, 1, 3, 3, 3, 2, 2, 2, 3, 2, 1};
 int scale[] = {1, 2, 3, 4, 5, 5, 4, 3, 2, 1};
@@ -29,7 +29,7 @@ int spider[] = {5, 1, 1, 1, 2, 3, 3, 3, 2, 3, 1, 3, 3, 4, 5, 5, 4, 3, 4, 5, 3, 1
 // An array that saves the letter values of the notes
 const String noteValues[] = {"C", "D", "E", "F", "G"};
 
-void setup() {
+void setup() { // runs once when the Arduino starts up
   // Set each button as an input
   pinMode(redButton, INPUT_PULLUP);
   pinMode(yellowButton, INPUT_PULLUP);
@@ -42,7 +42,7 @@ void setup() {
   lcd.begin(16, 2);         // Begin the LCD display
 }
 
-void loop() {
+void loop() { // runs continuously in a loop
   mainInterface(); // Run the main interface
 }
 
@@ -93,31 +93,29 @@ void playSong(int *song) {   // this function plays the song passed in as a para
   }
 }
 
-// This function is the main interface of the program
-void mainInterface() {
+void mainInterface() { // This function is the main interface of the program
   lcd.setCursor(0, 0);  // Set the location of the cursor to the start of the first tow
   lcd.print("Select");  // Print select to the LCD
   if (oneButtonPressed()) { // Check if only one button was pressed
     // The following code plays a song based on the button pressed. 
     if (digitalRead(redButton) == LOW) {
-      playSong(marySong);
+      playSong(marySong); // plays Mary had a Little Lamb
     } else if (digitalRead(yellowButton) == LOW) {
-      playSong(hotCrossSong);
+      playSong(hotCrossSong); // plays Hot Cross Buttons
     } else if (digitalRead(greenButton) == LOW) {
-      playSong(scale);
+      playSong(scale); // plays a simple scale
     } else if (digitalRead(blueButton) == LOW) {
-      playSong(jingle);
+      playSong(jingle); // plays Jingle Bells
     } else if (digitalRead(whiteButton) == LOW) {
-      playSong(spider);
+      playSong(spider); // plays the itsy bitsy spider
     }
   }
 }
 
-// This function plays a note on a buzzer
-void playNote(int note) {
+void playNote(int note) { // This function plays a note on a buzzer
   int noteID = 0; // holds the noteID that will be changed in the switch case
   float duration = 3000 / 6; // how long to play the note for
-  switch (note) { // switch case that determines which note to play based on the note passed into the function
+  switch (note) { // switch case that determines which note to play based on the note passed into the function. Each case assigns noteID to the appropriate note to be played
     case 1:       // plays a low C
       noteID = NOTE_C4;
       break;
@@ -138,13 +136,11 @@ void playNote(int note) {
   delay(duration * scaler);         // add a delay so the note sounds proper
 }
 
-// This function checks if any button has been pressed
-bool anyButtonPressed() {
+bool anyButtonPressed() {  // This function checks if any button has been pressed. It returns a true/false boolean.
   return digitalRead(redButton) == LOW or digitalRead(yellowButton) == LOW or digitalRead(greenButton) == LOW or digitalRead(blueButton) == LOW or digitalRead(whiteButton) == LOW;
 }
 
-// This function makes sure only one button was pressed (uses XOR)
-bool oneButtonPressed() {
+bool oneButtonPressed() { // This function makes sure only one button was pressed (uses XOR). It returns a true/false boolean.
   return digitalRead(redButton) == LOW ^ digitalRead(yellowButton) == LOW ^ digitalRead(greenButton) == LOW ^ digitalRead(blueButton) == LOW ^ digitalRead(whiteButton) == LOW;
 }
 
