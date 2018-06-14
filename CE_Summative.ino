@@ -22,6 +22,9 @@ int score = 0; // Keeps count of score
 // Various Songs
 int marySong[] = {3, 2, 1, 2, 3, 3, 3, 2, 2, 2, 3, 5, 5, 3, 2, 1, 2, 3, 3, 3, 3, 2, 2, 3, 2, 1};
 int hotCrossSong[] = {3, 2, 1, 3, 2, 1, 3, 3, 3, 2, 2, 2, 3, 2, 1};
+int scale[] = {1, 2, 3, 4, 5, 5, 4, 3, 2, 1};
+int jingle[] = {3, 3, 3, 3, 3, 3, 3, 5, 1, 2, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 3, 2, 5};
+int spider[] = {5, 1, 1, 1, 2, 3, 3, 3, 2, 3, 1, 3, 3, 4, 5, 5, 4, 3, 4, 5, 3, 1, 1, 2, 3, 3, 2, 1, 2, 3, 1, 5, 5, 1, 1, 1, 2, 3, 3, 3, 2, 1, 2, 3, 1};
 
 // An array that saves the letter values of the notes
 const String noteValues[] = {"C", "D", "E", "F", "G"};
@@ -37,14 +40,13 @@ void setup() {
   pinMode(ledPort, OUTPUT); // Set the LED port to an output
   digitalWrite(1, LOW);     // Initially set the LED off (LOW)
   lcd.begin(16, 2);         // Begin the LCD display
-  //  Serial.begin(9600);
 }
 
 void loop() {
   mainInterface(); // Run the main interface
 }
 
-void playSong(int *song) {
+void playSong(int *song) {   // this function plays the song passed in as a parameter
   bool correctPress = false; // set correctPress to false since the user hasn't hit the right button yet
   bool turn = false;         // set turn to false since the user hasn't taken a turn yet
   for (int i = 0; i < sizeof(song) / sizeof(song[0]) ; i++) { // loop through the notes of the song
@@ -79,7 +81,7 @@ void playSong(int *song) {
     lcd.setCursor(0, 1);                  // set the position of the cursor to the second row
     lcd.print("Final Score: " + (String) score + "/" + (String) (sizeof(song) / sizeof(song[0]))); // show the final score on the LCD
   }
-  lcd.setCursor(0, 0); // set the cursor to the first row
+  lcd.setCursor(0, 0);                                                                            // set the cursor to the first row
   lcd.print("Final Score: " + (String) score + "/" + (String) (sizeof(song) / sizeof(song[0])));  // show the final score on the LCD
   lcd.setCursor(0, 1);            // set the cursor to the second row
   lcd.print("Awaiting restart."); // print "Awaiting restart." to the LCD
@@ -96,10 +98,17 @@ void mainInterface() {
   lcd.setCursor(0, 0);  // Set the location of the cursor to the start of the first tow
   lcd.print("Select");  // Print select to the LCD
   if (oneButtonPressed()) { // Check if only one button was pressed
-    if (digitalRead(redButton) == LOW) { // if button
+    // The following code plays a song based on the button pressed. 
+    if (digitalRead(redButton) == LOW) {
       playSong(marySong);
     } else if (digitalRead(yellowButton) == LOW) {
       playSong(hotCrossSong);
+    } else if (digitalRead(greenButton) == LOW) {
+      playSong(scale);
+    } else if (digitalRead(blueButton) == LOW) {
+      playSong(jingle);
+    } else if (digitalRead(whiteButton) == LOW) {
+      playSong(spider);
     }
   }
 }
@@ -108,20 +117,20 @@ void mainInterface() {
 void playNote(int note) {
   int noteID = 0; // holds the noteID that will be changed in the switch case
   float duration = 3000 / 6; // how long to play the note for
-  switch (note) { // switch case that determines which note to play based on its ID
-    case 1:
+  switch (note) { // switch case that determines which note to play based on the note passed into the function
+    case 1:       // plays a low C
       noteID = NOTE_C4;
       break;
-    case 2:
+    case 2:       // plays a low D
       noteID = NOTE_D4;
       break;
-    case 3:
+    case 3:       // plays a low E
       noteID = NOTE_E4;
       break;
-    case 4:
+    case 4:       // plays a low F
       noteID = NOTE_F4;
       break;
-    case 5:
+    case 5:       // plays a low G
       noteID = NOTE_G4;
       break;
   }
